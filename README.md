@@ -40,7 +40,6 @@ decision-matrix/
 ├── index.html            # Core HTML5, CSS layout, and React components
 ├── manifest.json         # PWA Manifest for installation rules
 ├── service-worker.js     # Caches assets for offline-first support
-├── FIREBASE_SETUP.md     # Detailed documentation on backend setup & GCP security
 └── icon-*.png            # App launcher icons for multiple viewport sizes
 ```
 
@@ -51,5 +50,3 @@ decision-matrix/
 * **Frontend**: React 18 & Babel (served entirely client-side via CDN)
 * **Styling**: Modern, responsive dark-themed HSL CSS
 * **Backend**: Firebase Compatibility SDK (v12) for Authentication and Firestore
-
-For detailed instructions on configuring the Firebase Console, deploying to GitHub Pages, or setting up API restrictions, see [FIREBASE_SETUP.md](./FIREBASE_SETUP.md).
