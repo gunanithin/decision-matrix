@@ -404,7 +404,11 @@
 
       const signIn = () => {
         if (!firebaseReady) return;
-        firebase.auth().signInWithRedirect(new firebase.auth.GoogleAuthProvider());
+        firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider())
+          .then((result) => {
+            setUser(result.user);
+          })
+          .catch((e) => console.error("popup sign-in error", e));
       };
       const signOutUser = () => firebase.auth().signOut();
 
