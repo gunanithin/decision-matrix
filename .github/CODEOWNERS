@@ -1,0 +1,3 @@
+# Global code owners for the repository.
+# The * wildcard means @gunanithin owns all files in this repository.
+* @gunanithin
