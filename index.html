@@ -747,21 +747,19 @@
       return (
         <div className="app-wrapper">
           {/* Canva Presentation Top Bar */}
-          <div className="canva-top-bar">
-            <span className="bar-text">Studio Shodwe</span>
+          <div className="canva-top-bar" style={{ justifyContent: 'center' }}>
             <div className="dot-container">
               <span className="bar-dot"></span>
               <span className="bar-dot"></span>
               <span className="bar-dot"></span>
               <span className="bar-dot"></span>
             </div>
-            <span className="bar-text">Presented by Estelle Darcy</span>
           </div>
 
           {/* Canva Presentation Slide Canvas */}
           <div className="em-canvas">
             <header className="em-header">
-              <h1>THE FOUR QUADRANTS</h1>
+              <h1>Decision Matrix</h1>
               
               {/* Task Add Form */}
               <div className="em-add">
@@ -839,9 +837,8 @@
               ))}
             </div>
 
-            <footer className="em-footer">
+            <footer className="em-footer" style={{ justifyContent: 'center' }}>
               <div>{user ? `Synced to ${user.email}` : "Saved on this device"}</div>
-              <div className="canva-attribution">Designed with Canva</div>
             </footer>
           </div>
         </div>
