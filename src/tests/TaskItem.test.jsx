@@ -61,4 +61,18 @@ describe('TaskItem Component', () => {
     render(<TaskItem t={datedTask} />);
     expect(screen.getByText(/2026-07-21/)).toBeInTheDocument();
   });
+
+  it('renders time badge if dueTime exists', () => {
+    const timedTask = { ...mockTask, dueDate: '2026-07-21', dueTime: '14:00' };
+    render(<TaskItem t={timedTask} />);
+    expect(screen.getByText(/14:00/)).toBeInTheDocument();
+  });
+
+  it('calls removeTask when delete button is clicked', () => {
+    const removeTask = vi.fn();
+    render(<TaskItem t={mockTask} removeTask={removeTask} />);
+    
+    fireEvent.click(screen.getByTitle('Delete Task'));
+    expect(removeTask).toHaveBeenCalledWith('123');
+  });
 });
