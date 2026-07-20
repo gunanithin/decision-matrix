@@ -788,7 +788,10 @@
             const messaging = firebase.messaging();
             let swRegistration = null;
             if ('serviceWorker' in navigator) {
-              swRegistration = await navigator.serviceWorker.getRegistration().catch(() => null);
+              swRegistration = await navigator.serviceWorker.register('./firebase-messaging-sw.js').catch(e => {
+                console.error("FCM SW register error:", e);
+                return null;
+              });
             }
             const tokenOptions = {
               vapidKey: VAPID_KEY,
@@ -832,7 +835,7 @@
         // If permission is already granted, auto-refresh FCM token
         if ('Notification' in window && Notification.permission === 'granted' && firebase.messaging.isSupported()) {
           try {
-            navigator.serviceWorker.ready.then(swRegistration => {
+            navigator.serviceWorker.register('./firebase-messaging-sw.js').then(swRegistration => {
               const messaging = firebase.messaging();
               const tokenOpts = {
                 vapidKey: VAPID_KEY,
@@ -843,7 +846,7 @@
                   profileRef.set({ fcmToken: token }, { merge: true });
                 }
               }).catch(e => console.log("FCM Token fetch skipped/silent:", e));
-            }).catch(() => {});
+            }).catch(e => console.log("FCM SW register skipped/silent:", e));
           } catch (e) { }
         }
 
