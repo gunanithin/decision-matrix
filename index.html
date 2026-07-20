@@ -806,13 +806,25 @@
               }
               return null;
             });
-            if (token) {
-              await firebase.firestore().collection("users").doc(user.uid).set({
-                fcmTokens: firebase.firestore.FieldValue.arrayUnion(token),
-                fcmToken: token
-              }, { merge: true });
-              alert("Native Push Notifications enabled!");
-            }
+              if (token) {
+                await firebase.firestore().collection("users").doc(user.uid).set({
+                  fcmTokens: firebase.firestore.FieldValue.arrayUnion(token),
+                  fcmToken: token
+                }, { merge: true });
+                alert("Native Push Notifications enabled!");
+              }
+              
+              // Handle foreground messages
+              messaging.onMessage((payload) => {
+                console.log("Foreground message received:", payload);
+                if (payload.notification) {
+                  new Notification(payload.notification.title, {
+                    body: payload.notification.body,
+                    icon: "./icon-192.png",
+                    badge: "./icon-180.png"
+                  });
+                }
+              });
           } else if (perm === 'denied') {
             alert("Notification permission was denied. Please unblock notifications in your browser site settings.");
           }
@@ -849,6 +861,17 @@
                     fcmToken: token
                   }, { merge: true });
                 }
+                // Handle foreground messages on auto-refresh
+                messaging.onMessage((payload) => {
+                  console.log("Foreground message received:", payload);
+                  if (payload.notification) {
+                    new Notification(payload.notification.title, {
+                      body: payload.notification.body,
+                      icon: "./icon-192.png",
+                      badge: "./icon-180.png"
+                    });
+                  }
+                });
               }).catch(e => console.log("FCM Token fetch skipped/silent:", e));
             }).catch(e => console.log("FCM SW register skipped/silent:", e));
           } catch (e) { }

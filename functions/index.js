@@ -40,7 +40,7 @@ function getLocalTimeElements(timezone) {
   }
 }
 
-exports.checkNotifications = functions.pubsub.schedule("every 5 minutes").onRun(async (context) => {
+exports.checkNotifications = functions.pubsub.schedule("every 1 minutes").onRun(async (context) => {
   const db = admin.firestore();
   const usersSnap = await db.collection("users").get();
   
