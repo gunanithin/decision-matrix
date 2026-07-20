@@ -5,4 +5,26 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   base: '/decision-matrix/',
   plugins: [react()],
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: './src/setupTests.js',
+    coverage: {
+      provider: 'v8',
+      exclude: [
+        'src/firebase.js',
+        'src/hooks/**',
+        'src/main.jsx',
+        'src/App.jsx', // Excluded from unit-test coverage thresholds due to integration nature
+        '**/.eslintrc.cjs',
+        '**/dist/**'
+      ],
+      thresholds: {
+        lines: 95,
+        functions: 95,
+        branches: 95,
+        statements: 95
+      }
+    }
+  }
 })
