@@ -786,7 +786,10 @@
           const perm = await Notification.requestPermission();
           if (perm === 'granted' && firebase.messaging.isSupported()) {
             const messaging = firebase.messaging();
-            const swRegistration = await navigator.serviceWorker.ready.catch(() => null);
+            let swRegistration = null;
+            if ('serviceWorker' in navigator) {
+              swRegistration = await navigator.serviceWorker.getRegistration().catch(() => null);
+            }
             const tokenOptions = {
               vapidKey: VAPID_KEY,
               ...(swRegistration ? { serviceWorkerRegistration: swRegistration } : {})
