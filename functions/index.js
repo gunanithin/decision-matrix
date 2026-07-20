@@ -178,36 +178,48 @@ exports.checkNotifications = functions.pubsub.schedule("every 5 minutes").onRun(
     
     // ─── Send Push Notifications via FCM ──────────────────────────────
     if (tasksToNotify.length > 0) {
-      if (userData.fcmToken) {
+      let tokens = [];
+      if (Array.isArray(userData.fcmTokens) && userData.fcmTokens.length > 0) {
+        tokens = userData.fcmTokens;
+      } else if (userData.fcmToken) {
+        tokens = [userData.fcmToken];
+      }
+
+      if (tokens.length > 0) {
         for (const n of tasksToNotify) {
-          try {
-            await admin.messaging().send({
-              token: userData.fcmToken,
-              notification: {
-                title: n.type,
-                body: n.details
-              },
-              webpush: {
-                fcmOptions: {
-                  link: "https://gunanithin.github.io/decision-matrix/"
-                },
+          for (const token of tokens) {
+            try {
+              await admin.messaging().send({
+                token: token,
                 notification: {
-                  icon: "https://gunanithin.github.io/decision-matrix/icon-192.png",
-                  badge: "https://gunanithin.github.io/decision-matrix/icon-180.png"
+                  title: n.type,
+                  body: n.details
+                },
+                webpush: {
+                  fcmOptions: {
+                    link: "https://gunanithin.github.io/decision-matrix/"
+                  },
+                  notification: {
+                    icon: "https://gunanithin.github.io/decision-matrix/icon-192.png",
+                    badge: "https://gunanithin.github.io/decision-matrix/icon-180.png"
+                  }
                 }
+              });
+              console.log(`Successfully sent FCM push notification "${n.type}" to user ${userId}`);
+            } catch (pushErr) {
+              console.error(`Error sending FCM push to token for user ${userId}:`, pushErr);
+              if (pushErr.code === "messaging/invalid-registration-token" || 
+                  pushErr.code === "messaging/registration-token-not-registered") {
+                await db.collection("users").doc(userDoc.id).update({
+                  fcmTokens: admin.firestore.FieldValue.arrayRemove(token),
+                  fcmToken: admin.firestore.FieldValue.delete()
+                }).catch(() => {});
               }
-            });
-            console.log(`Successfully sent FCM push notification "${n.type}" to user ${userDoc.id}`);
-          } catch (pushErr) {
-            console.error(`Error sending FCM push to user ${userDoc.id}:`, pushErr);
-            if (pushErr.code === "messaging/invalid-registration-token" || 
-                pushErr.code === "messaging/registration-token-not-registered") {
-              await db.collection("users").doc(userDoc.id).set({ fcmToken: null }, { merge: true });
             }
           }
         }
       } else {
-        console.log(`[NO FCM TOKEN] User ${userId} has no registered FCM Push token.`);
+        console.log(`[NO FCM TOKENS] User ${userId} has no registered FCM Push tokens.`);
       }
     }
     

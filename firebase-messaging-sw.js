@@ -14,14 +14,14 @@ firebase.initializeApp({
 const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage((payload) => {
-  const title = (payload.notification && payload.notification.title) || "Decision Matrix Alert";
-  const options = {
-    body: (payload.notification && payload.notification.body) || "You have a task reminder.",
-    icon: "./icon-192.png",
-    badge: "./icon-180.png",
-    data: {
-      url: (payload.webpush && payload.webpush.fcmOptions && payload.webpush.fcmOptions.link) || "./"
-    }
-  };
-  self.registration.showNotification(title, options);
+  console.log('[firebase-messaging-sw.js] Received background message ', payload);
+  if (!payload.notification) {
+    const title = (payload.data && payload.data.title) || "Decision Matrix Alert";
+    const options = {
+      body: (payload.data && payload.data.body) || "You have a task reminder.",
+      icon: "./icon-192.png",
+      badge: "./icon-180.png"
+    };
+    self.registration.showNotification(title, options);
+  }
 });

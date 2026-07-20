@@ -808,6 +808,7 @@
             });
             if (token) {
               await firebase.firestore().collection("users").doc(user.uid).set({
+                fcmTokens: firebase.firestore.FieldValue.arrayUnion(token),
                 fcmToken: token
               }, { merge: true });
               alert("Native Push Notifications enabled!");
@@ -843,7 +844,10 @@
               };
               messaging.getToken(tokenOpts).then((token) => {
                 if (token) {
-                  profileRef.set({ fcmToken: token }, { merge: true });
+                  profileRef.set({
+                    fcmTokens: firebase.firestore.FieldValue.arrayUnion(token),
+                    fcmToken: token
+                  }, { merge: true });
                 }
               }).catch(e => console.log("FCM Token fetch skipped/silent:", e));
             }).catch(e => console.log("FCM SW register skipped/silent:", e));
