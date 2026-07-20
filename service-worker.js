@@ -1,4 +1,4 @@
-const CACHE_NAME = 'decision-matrix-cache-v2';
+const CACHE_NAME = 'decision-matrix-cache-v3';
 const urlsToCache = [
   './',
   './index.html',
