@@ -19,7 +19,9 @@
   <!-- Google Fonts for Modern Canva UI -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
 
   <!-- React & Babel -->
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
@@ -40,12 +42,12 @@
       --beige-card: #fdfaf4;
       --badge-orange: #c85a17;
       --text-muted: #a2bba5;
-      
+
       --q-do: #0d2b21;
       --q-decide: #0d2b21;
       --q-delegate: #0d2b21;
       --q-delete: #0d2b21;
-      
+
       --fg: #1c2130;
     }
 
@@ -345,8 +347,17 @@
     }
 
     @keyframes em-pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.35; transform: scale(0.85); }
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.35;
+        transform: scale(0.85);
+      }
     }
 
     /* Quadrant Grid Layout (4 columns side-by-side) */
@@ -368,50 +379,61 @@
       .canva-top-bar {
         padding: 16px 20px;
       }
+
       .em-canvas {
         padding: 30px 16px;
         border-radius: 30px 30px 0 0;
       }
+
       h1 {
         font-size: 2.2rem;
       }
+
       .em-add {
         flex-direction: column;
         gap: 8px;
         padding: 8px;
       }
+
       .em-add-row {
         display: flex;
         gap: 8px;
         width: 100%;
       }
+
       .em-add input {
         width: 100%;
         box-sizing: border-box;
       }
+
       .em-add select {
         flex: 1;
         box-sizing: border-box;
       }
+
       .em-add-btn {
         flex: 1.2;
         justify-content: center;
         box-sizing: border-box;
       }
+
       .em-authbar {
         flex-direction: column;
         gap: 8px;
         border-radius: 18px;
         padding: 12px;
       }
+
       .em-status {
         width: 100%;
         justify-content: center;
       }
+
       .matrix-grid {
         grid-template-columns: 1fr;
         gap: 16px;
       }
+
       .quadrant {
         min-height: auto;
       }
@@ -696,29 +718,29 @@
     }
 
     const QUADRANTS = [
-      { 
-        id: "do", 
-        title: "Do First: Urgent & Important", 
+      {
+        id: "do",
+        title: "Do First: Urgent & Important",
         shortTitle: "Do First",
-        image: "https://gunanithin.my.canva.site/_assets/media/34dd681b756d4ad187ef655b0376ad5e.png" 
+        image: "https://gunanithin.my.canva.site/_assets/media/34dd681b756d4ad187ef655b0376ad5e.png"
       },
-      { 
-        id: "decide", 
-        title: "Schedule: Important, Not Urgent", 
+      {
+        id: "decide",
+        title: "Schedule: Important, Not Urgent",
         shortTitle: "Schedule",
-        image: "https://gunanithin.my.canva.site/_assets/media/fdc0dcd9e5f1ecc0c477f99175fc9f36.png" 
+        image: "https://gunanithin.my.canva.site/_assets/media/fdc0dcd9e5f1ecc0c477f99175fc9f36.png"
       },
-      { 
-        id: "delegate", 
-        title: "Delegate: Urgent, Not Important", 
+      {
+        id: "delegate",
+        title: "Delegate: Urgent, Not Important",
         shortTitle: "Delegate",
-        image: "https://gunanithin.my.canva.site/_assets/media/0fe1200155f31500bcb606ef72be3589.png" 
+        image: "https://gunanithin.my.canva.site/_assets/media/0fe1200155f31500bcb606ef72be3589.png"
       },
-      { 
-        id: "delete", 
-        title: "Don't Do: Neither Urgent Nor Important", 
+      {
+        id: "delete",
+        title: "Don't Do: Neither Urgent Nor Important",
         shortTitle: "Don't Do",
-        image: "https://gunanithin.my.canva.site/_assets/media/85b7aed970d33a415364300b038afa4e.png" 
+        image: "https://gunanithin.my.canva.site/_assets/media/85b7aed970d33a415364300b038afa4e.png"
       }
     ];
 
@@ -752,6 +774,8 @@
         return unsub;
       }, []);
 
+      const VAPID_KEY = "BMKwflH9dYxByEVVgw6Xh4eD8Caj4g17LF-x0Qe6vE-CTEooIsXImL-81bBc5eu1A6HiiLZZ9A7YeyCLeaidvFw"; // Firebase Console -> Project Settings -> Cloud Messaging -> Web Push certificates
+
       const enablePushNotifications = React.useCallback(async () => {
         if (!firebaseReady || !user) return;
         try {
@@ -762,7 +786,16 @@
           const perm = await Notification.requestPermission();
           if (perm === 'granted' && firebase.messaging.isSupported()) {
             const messaging = firebase.messaging();
-            const token = await messaging.getToken();
+            const tokenOptions = VAPID_KEY ? { vapidKey: VAPID_KEY } : undefined;
+            const token = await messaging.getToken(tokenOptions).catch(err => {
+              console.error("FCM Token Error:", err);
+              if (err.code === "messaging/missing-vapid-key" || err.message.includes("vapidKey")) {
+                alert("To enable Web Push Notifications, please add your Firebase VAPID key to index.html:\n\n1. Open Firebase Console -> Project Settings -> Cloud Messaging\n2. Scroll to Web Configuration -> Generate key pair\n3. Copy the key and set VAPID_KEY in index.html");
+              } else {
+                alert("FCM Token Error: " + err.message);
+              }
+              return null;
+            });
             if (token) {
               await firebase.firestore().collection("users").doc(user.uid).set({
                 fcmToken: token
@@ -774,6 +807,7 @@
           }
         } catch (err) {
           console.error("Error enabling push notifications:", err);
+          alert("Error: " + err.message);
         }
       }, [user]);
 
@@ -792,12 +826,13 @@
         if ('Notification' in window && Notification.permission === 'granted' && firebase.messaging.isSupported()) {
           try {
             const messaging = firebase.messaging();
-            messaging.getToken().then((token) => {
+            const tokenOpts = VAPID_KEY ? { vapidKey: VAPID_KEY } : undefined;
+            messaging.getToken(tokenOpts).then((token) => {
               if (token) {
                 profileRef.set({ fcmToken: token }, { merge: true });
               }
             }).catch(e => console.log("FCM Token fetch skipped/silent:", e));
-          } catch(e) {}
+          } catch (e) { }
         }
 
         let seeded = false;
@@ -895,7 +930,7 @@
           <div className="em-canvas">
             <header className="em-header">
               <h1>Decision Matrix</h1>
-              
+
               {/* Task Add Form */}
               <div className="em-add" style={{ flexDirection: 'column', alignItems: 'stretch' }}>
                 <input
@@ -909,16 +944,16 @@
                 {/* Conditional Date/Time Pickers for Schedule & Delegate */}
                 {(picked === "decide" || picked === "delegate") && (
                   <div className="em-add-schedule">
-                    <input 
-                      type="date" 
-                      value={dueDate} 
-                      onChange={(e) => setDueDate(e.target.value)} 
+                    <input
+                      type="date"
+                      value={dueDate}
+                      onChange={(e) => setDueDate(e.target.value)}
                     />
                     {picked === "decide" && (
-                      <input 
-                        type="time" 
-                        value={dueTime} 
-                        onChange={(e) => setDueTime(e.target.value)} 
+                      <input
+                        type="time"
+                        value={dueTime}
+                        onChange={(e) => setDueTime(e.target.value)}
                       />
                     )}
                   </div>
@@ -969,7 +1004,7 @@
                   <div className="q-image-container">
                     <img src={q.image} alt={q.title} className="q-image" />
                   </div>
-                  
+
                   {/* Header containing Badge & Title */}
                   <div className="q-header">
                     <div className="q-title-wrapper">
