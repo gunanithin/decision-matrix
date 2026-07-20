@@ -15,17 +15,13 @@ const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage((payload) => {
   console.log('[firebase-messaging-sw.js] Received background message ', payload);
-  
-  // Forcefully show notification to bypass Firebase SDK silent failures on Mac Chrome
-  const title = (payload.notification && payload.notification.title) || (payload.data && payload.data.title) || "Decision Matrix Alert";
-  const options = {
-    body: (payload.notification && payload.notification.body) || (payload.data && payload.data.body) || "You have a task reminder.",
-    icon: "./icon-192.png",
-    badge: "./icon-180.png",
-    data: {
-      url: (payload.fcmOptions && payload.fcmOptions.link) || "https://gunanithin.github.io/decision-matrix/"
-    }
-  };
-  
-  self.registration.showNotification(title, options);
+  if (!payload.notification) {
+    const title = (payload.data && payload.data.title) || "Decision Matrix Alert";
+    const options = {
+      body: (payload.data && payload.data.body) || "You have a task reminder.",
+      icon: "https://gunanithin.github.io/decision-matrix/icon-192.png",
+      badge: "https://gunanithin.github.io/decision-matrix/icon-180.png"
+    };
+    self.registration.showNotification(title, options);
+  }
 });
