@@ -1,52 +1,84 @@
 # Decision Matrix PWA
 
-A sleek, responsive Eisenhower Matrix Personal Web Application (PWA) with offline-first support, Google Authentication, and real-time cloud synchronization.
+A sleek, modern Eisenhower Matrix Progressive Web Application (PWA) built with modern UI styling, offline-first support, Google Authentication, real-time Cloud Firestore sync, and scheduled Web Push notifications.
 
 Designed to help you prioritize tasks using the Eisenhower Matrix framework:
 - **Do First** (Urgent & Important)
-- **Schedule** (Important but Not Urgent)
-- **Delegate** (Urgent but Not Important)
-- **Don't Do** (Not Urgent & Not Important)
+- **Schedule** (Important, Not Urgent)
+- **Delegate** (Urgent, Not Important)
+- **Don't Do** (Neither Urgent Nor Important)
 
 ---
 
-## Key Features
+## 🚀 Key Features
+
+### 📅 Task Scheduling & Date/Time Pickers
+* **Dynamic Fields:** Optional Date and Time pickers for **Schedule** and **Delegate** tasks.
+* **Metadata Badges:** Visual calendar indicators (`📅 YYYY-MM-DD ⏰ HH:MM`) rendered on scheduled task cards.
+* **Timezone Synchronization:** Automatically captures your device's timezone (e.g., `Asia/Kolkata`) and syncs it to Firestore so reminders trigger at your exact local time.
+
+### 🔔 Native Web Push Notifications (Firebase Cloud Messaging)
+* **Zero Passwords & 100% Free:** Completely passwordless Web Push architecture using Firebase Cloud Messaging (FCM).
+* **Scheduled Worker:** A background 5-minute Cloud Function (`checkNotifications`) evaluates task deadlines and delivers native push notifications to your phone or desktop even when the app is closed.
+* **Smart Alert Triggers:**
+  * **Schedule Tasks:** 15-minute prior warning, on-time alert, and daily repeating overdue reminders.
+  * **Delegate Tasks:** 1-day prior warning and daily repeating overdue reminders.
+  * **Do First Tasks:** Daily 7:00 PM summary digest of uncompleted tasks.
 
 ### 🔄 Real-Time Firebase Sync
-Tasks are synchronized automatically with **Cloud Firestore** whenever you are logged in. 
-* **Seamless Syncing**: Changes made on one device (adding, removing, or toggling tasks) reflect instantly on all other logged-in screens.
-* **Debounced Writes**: Cloud writes are debounced (500ms delay) to save database write quotas and limit network requests.
+* **Instant Cloud Sync:** Tasks sync with **Cloud Firestore** whenever you are logged in.
+* **Debounced Writes:** Cloud writes are debounced (500ms delay) to save database write quotas.
 
-### 📶 Offline-First Design
-The app is built to work reliably even without an internet connection:
-* **Local Fallback**: Tasks are saved to `localStorage` instantly before any network request is attempted.
-* **Resilient Sync**: If you are offline while editing, tasks are cached locally. Sync automatically resumes as soon as you reconnect.
-
-### 🔐 Google Authentication & Privacy
-Built with Firebase Auth using `signInWithPopup` for broad browser compatibility (handling Cookie and storage restrictions):
-* **Private and Secure**: Standard Cloud Firestore Security Rules ensure that your tasks are strictly isolated to your own Google account UID. Other users opening the application will only see their own empty tracker.
-* **Zero-Configuration Client**: All API access security is verified server-side on Google's infrastructure.
+### 📶 Offline-First & Privacy
+* **Local Fallback:** Tasks are saved to `localStorage` instantly before any network request.
+* **Privacy & Isolation:** Firestore Security Rules ensure that your tasks are strictly isolated to your own Google account UID.
 
 ### 📱 PWA Features
-* **Installable**: Installs directly to your home screen on iOS, Android, or desktop.
-* **Offline Access**: Uses a service worker to cache essential scripts and styles, making it load instantly in low-network conditions.
+* **Installable:** Installs directly to your home screen on iOS, Android, or desktop.
+* **Service Worker Caching:** Caches essential scripts, styles, and push notification handlers for instant loading offline.
 
 ---
 
-## Project Structure
+## 🛠️ Project Structure
 
 ```
 decision-matrix/
-├── index.html            # Core HTML5, CSS layout, and React components
+├── index.html            # UI layout, React components, and FCM token handler
 ├── manifest.json         # PWA Manifest for installation rules
-├── service-worker.js     # Caches assets for offline-first support
-└── icon-*.png            # App launcher icons for multiple viewport sizes
+├── service-worker.js     # Service worker caching and background push listener
+├── package.json          # Root scripts (npm start / npm run dev)
+├── firebase.json         # Firebase Cloud Functions configuration
+├── .firebaserc           # Active Firebase project reference
+├── .gitignore            # Excludes node_modules and debug logs
+└── functions/            # Scheduled Cloud Function codebase
+    ├── index.js          # 5-minute scheduled checkNotifications function
+    └── package.json      # Node.js 20/22 Cloud Function dependencies
 ```
 
 ---
 
-## Technical Details
+## 💻 Local Development
 
-* **Frontend**: React 18 & Babel (served entirely client-side via CDN)
-* **Styling**: Modern, responsive dark-themed HSL CSS
-* **Backend**: Firebase Compatibility SDK (v12) for Authentication and Firestore
+Start the local preview server:
+
+```bash
+npm start
+# or
+npm run dev
+```
+
+Then open your browser at **`http://localhost:8000`**.
+
+---
+
+## ☁️ Deploying Cloud Functions
+
+To deploy the background notification worker:
+
+```bash
+# 1. Log in to Firebase CLI
+npx -y firebase-tools@latest login
+
+# 2. Deploy Cloud Functions
+npx -y firebase-tools@latest deploy --only functions
+```
