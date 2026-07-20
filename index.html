@@ -1119,6 +1119,9 @@
         setDueDate("");
         setDueTime("");
         setEditingTaskId(null);
+        if (fpInstance.current) {
+          fpInstance.current.clear();
+        }
       }, [text, picked, dueDate, dueTime, writeRemote, editingTaskId]);
 
       const editTask = (id) => {
@@ -1129,6 +1132,15 @@
           setPicked(t.quadrant);
           setDueDate(t.dueDate || "");
           setDueTime(t.dueTime || "");
+          
+          if (fpInstance.current) {
+            if (t.dueDate) {
+              fpInstance.current.setDate(t.dueTime && t.quadrant === "decide" ? `${t.dueDate} ${t.dueTime}` : t.dueDate);
+            } else {
+              fpInstance.current.clear();
+            }
+          }
+          
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }
       };
@@ -1139,6 +1151,9 @@
         setDueDate("");
         setDueTime("");
         setPicked("do");
+        if (fpInstance.current) {
+          fpInstance.current.clear();
+        }
       };
 
       const toggleDone = (id) => setTasks((prev) => {
