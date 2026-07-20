@@ -816,18 +816,21 @@
               }
               
               // Handle foreground messages
-              messaging.onMessage((payload) => {
-                console.log("Foreground message received:", payload);
-                if (payload.notification) {
-                  navigator.serviceWorker.ready.then(reg => {
-                    reg.showNotification(payload.notification.title, {
-                      body: payload.notification.body,
-                      icon: "./icon-192.png",
-                      badge: "./icon-180.png"
+              if (!window.onMessageRegistered) {
+                messaging.onMessage((payload) => {
+                  console.log("Foreground message received:", payload);
+                  if (payload.notification) {
+                    navigator.serviceWorker.ready.then(reg => {
+                      reg.showNotification(payload.notification.title, {
+                        body: payload.notification.body,
+                        icon: "./icon-192.png",
+                        badge: "./icon-180.png"
+                      });
                     });
-                  });
-                }
-              });
+                  }
+                });
+                window.onMessageRegistered = true;
+              }
           } else if (perm === 'denied') {
             alert("Notification permission was denied. Please unblock notifications in your browser site settings.");
           }
@@ -865,18 +868,21 @@
                   }, { merge: true });
                 }
                 // Handle foreground messages on auto-refresh
-                messaging.onMessage((payload) => {
-                  console.log("Foreground message received:", payload);
-                  if (payload.notification) {
-                    navigator.serviceWorker.ready.then(reg => {
-                      reg.showNotification(payload.notification.title, {
-                        body: payload.notification.body,
-                        icon: "./icon-192.png",
-                        badge: "./icon-180.png"
+                if (!window.onMessageRegistered) {
+                  messaging.onMessage((payload) => {
+                    console.log("Foreground message received:", payload);
+                    if (payload.notification) {
+                      navigator.serviceWorker.ready.then(reg => {
+                        reg.showNotification(payload.notification.title, {
+                          body: payload.notification.body,
+                          icon: "./icon-192.png",
+                          badge: "./icon-180.png"
+                        });
                       });
-                    });
-                  }
-                });
+                    }
+                  });
+                  window.onMessageRegistered = true;
+                }
               }).catch(e => console.log("FCM Token fetch skipped/silent:", e));
             }).catch(e => console.log("FCM SW register skipped/silent:", e));
           } catch (e) { }
