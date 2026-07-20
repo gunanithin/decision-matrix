@@ -786,7 +786,11 @@
           const perm = await Notification.requestPermission();
           if (perm === 'granted' && firebase.messaging.isSupported()) {
             const messaging = firebase.messaging();
-            const tokenOptions = VAPID_KEY ? { vapidKey: VAPID_KEY } : undefined;
+            const swRegistration = await navigator.serviceWorker.ready.catch(() => null);
+            const tokenOptions = {
+              vapidKey: VAPID_KEY,
+              ...(swRegistration ? { serviceWorkerRegistration: swRegistration } : {})
+            };
             const token = await messaging.getToken(tokenOptions).catch(err => {
               console.error("FCM Token Error:", err);
               if (err.code === "messaging/missing-vapid-key" || err.message.includes("vapidKey")) {
@@ -825,13 +829,18 @@
         // If permission is already granted, auto-refresh FCM token
         if ('Notification' in window && Notification.permission === 'granted' && firebase.messaging.isSupported()) {
           try {
-            const messaging = firebase.messaging();
-            const tokenOpts = VAPID_KEY ? { vapidKey: VAPID_KEY } : undefined;
-            messaging.getToken(tokenOpts).then((token) => {
-              if (token) {
-                profileRef.set({ fcmToken: token }, { merge: true });
-              }
-            }).catch(e => console.log("FCM Token fetch skipped/silent:", e));
+            navigator.serviceWorker.ready.then(swRegistration => {
+              const messaging = firebase.messaging();
+              const tokenOpts = {
+                vapidKey: VAPID_KEY,
+                serviceWorkerRegistration: swRegistration
+              };
+              messaging.getToken(tokenOpts).then((token) => {
+                if (token) {
+                  profileRef.set({ fcmToken: token }, { merge: true });
+                }
+              }).catch(e => console.log("FCM Token fetch skipped/silent:", e));
+            }).catch(() => {});
           } catch (e) { }
         }
 
