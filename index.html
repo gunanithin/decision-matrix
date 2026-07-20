@@ -909,7 +909,7 @@
         clearTimeout(syncTimeout.current);
         syncTimeout.current = setTimeout(() => {
           firebase.firestore().collection("users").doc(user.uid)
-            .set({ tasks: newTasks, updatedAt: Date.now() })
+            .set({ tasks: newTasks, updatedAt: Date.now() }, { merge: true })
             .then(() => setSyncStatus("synced"))
             .catch((e) => { console.error("Firestore write failed", e); setSyncStatus("error"); });
         }, 500);
