@@ -819,7 +819,7 @@
               if (!window.onMessageRegistered) {
                 messaging.onMessage((payload) => {
                   console.log("Foreground message received:", payload);
-                  if (payload.notification) {
+                  if (payload.notification && document.visibilityState === 'visible') {
                     navigator.serviceWorker.ready.then(reg => {
                       reg.showNotification(payload.notification.title, {
                         body: payload.notification.body,
@@ -871,7 +871,7 @@
                 if (!window.onMessageRegistered) {
                   messaging.onMessage((payload) => {
                     console.log("Foreground message received:", payload);
-                    if (payload.notification) {
+                    if (payload.notification && document.visibilityState === 'visible') {
                       navigator.serviceWorker.ready.then(reg => {
                         reg.showNotification(payload.notification.title, {
                           body: payload.notification.body,
