@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import Quadrant from '../components/Quadrant';
 import { QUADRANTS } from '../constants';
 
@@ -40,5 +40,21 @@ describe('Quadrant Component', () => {
     
     // Should NOT render the task in the 'decide' quadrant
     expect(screen.queryByText('Schedule Task')).not.toBeInTheDocument();
+  });
+
+  it('calls clearDone when clear button is clicked', () => {
+    const clearDoneMock = vi.fn();
+    render(
+      <Quadrant
+        q={doQuadrant}
+        index={0}
+        tasks={mockTasks}
+        clearDone={clearDoneMock}
+      />
+    );
+    
+    const clearButton = screen.getByText('Clear');
+    fireEvent.click(clearButton);
+    expect(clearDoneMock).toHaveBeenCalledWith('do');
   });
 });

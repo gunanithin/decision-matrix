@@ -17,7 +17,9 @@ export default defineConfig({
         'src/main.jsx',
         'src/App.jsx', // Excluded from unit-test coverage thresholds due to integration nature
         '**/.eslintrc.cjs',
-        '**/dist/**'
+        '**/dist/**',
+        'functions/**',
+        'public/**'
       ],
       thresholds: {
         lines: 95,
