@@ -981,9 +981,9 @@
                       {user.photoURL && <img className="em-avatar" src={user.photoURL} alt="" />}
                       <span className="em-user-email">{user.email}</span>
                       <button className="em-signout-btn" onClick={signOutUser}>sign out</button>
-                      {'Notification' in window && Notification.permission !== 'granted' && (
+                      {'Notification' in window && (
                         <button className="em-signin-btn" style={{ padding: '4px 10px', fontSize: '11px', background: 'var(--badge-orange)', border: 'none' }} onClick={enablePushNotifications}>
-                          🔔 Enable Alerts
+                          {Notification.permission === 'granted' ? '🔔 Sync Alerts' : '🔔 Enable Alerts'}
                         </button>
                       )}
                     </div>
