@@ -1,16 +1,46 @@
-# React + Vite
+# Eisenhower Decision Matrix
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A modern, fast, and responsive Eisenhower Matrix application built with **React**, **Vite**, and **Firebase**. 
+This app helps you prioritize your tasks by categorizing them into four quadrants based on urgency and importance.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Four Quadrants**: Do First, Schedule, Delegate, and Don't Do.
+- **Real-time Sync**: Firebase Firestore integration keeps your tasks synced across devices instantly.
+- **Smart Scheduling**: Seamless integration with Flatpickr for selecting due dates and times.
+- **Modern Stack**: Built with Vite for ultra-fast HMR and optimized production builds.
+- **Comprehensive Testing**: Enforced 95% test coverage using Vitest and React Testing Library.
+- **Automated CI/CD**: GitHub Actions pipeline automatically tests and deploys the app to GitHub Pages.
 
-## React Compiler
+## Getting Started
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Prerequisites
+Make sure you have Node.js (v20+) installed.
 
-## Expanding the Oxlint configuration
+### Installation
+Clone the repository and install the dependencies:
+```bash
+npm install
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+### Development Server
+Run the local Vite development server:
+```bash
+npm run dev
+```
+Your app will be available at `http://localhost:5173`.
+
+### Testing (TDD)
+We use Vitest for unit and integration testing. The CI pipeline strictly enforces a **95% coverage threshold**.
+```bash
+# Run tests in watch mode (ideal for TDD)
+npm run test
+
+# Run tests once with a full coverage report
+npm run test -- --run --coverage
+```
+
+## Deployment
+The app is automatically tested and deployed to GitHub Pages via the `.github/workflows/deploy.yml` action whenever changes are pushed to the `main` branch. 
+
+If tests fail to meet the 95% coverage threshold, the pipeline will block the deployment to prevent regressions.
