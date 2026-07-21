@@ -21,7 +21,7 @@ describe('Quadrant Component', () => {
         clearDone={vi.fn()}
       />
     );
-    expect(screen.getByText('Do First: Urgent & Important')).toBeInTheDocument();
+    expect(screen.getByText('DO')).toBeInTheDocument();
   });
 
   it('filters and renders only tasks for this quadrant', () => {
@@ -53,7 +53,7 @@ describe('Quadrant Component', () => {
       />
     );
     
-    const clearButton = screen.getByText('Clear');
+    const clearButton = screen.getByText('Clear Done');
     fireEvent.click(clearButton);
     expect(clearDoneMock).toHaveBeenCalledWith('do');
   });

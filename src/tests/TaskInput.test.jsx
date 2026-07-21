@@ -58,8 +58,8 @@ describe('TaskInput Component', () => {
     );
     
     QUADRANTS.forEach(q => {
-      // It should render options for each quadrant's shortTitle
-      expect(screen.getByRole('option', { name: q.shortTitle })).toBeInTheDocument();
+      // It should render options for each quadrant's title
+      expect(screen.getByRole('option', { name: q.title })).toBeInTheDocument();
     });
   });
 

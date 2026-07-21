@@ -232,20 +232,23 @@ function DecisionMatrix() {
           )}
         </header>
 
-        <div className="matrix-grid">
-          {QUADRANTS.map((q, index) => (
-            <Quadrant
-              key={q.id}
-              q={q}
-              index={index}
-              tasks={tasks}
-              clearDone={clearDone}
-              toggleDone={toggleDone}
-              editTask={editTask}
-              cycle={cycle}
-              removeTask={removeTask}
-            />
-          ))}
+        <div className="matrix-wrapper">
+          <div className="matrix-grid">
+            {/* Top Row: X-axis labels */}
+            <div className="axis-corner"></div>
+            <div className="axis-label-x"><span className="axis-pill">URGENT</span></div>
+            <div className="axis-label-x"><span className="axis-pill">NOT URGENT</span></div>
+
+            {/* Middle Row: Important */}
+            <div className="axis-label-y"><span className="axis-pill-y">IMPORTANT</span></div>
+            <Quadrant q={QUADRANTS[0]} index={0} tasks={tasks} clearDone={clearDone} toggleDone={toggleDone} editTask={editTask} cycle={cycle} removeTask={removeTask} />
+            <Quadrant q={QUADRANTS[1]} index={1} tasks={tasks} clearDone={clearDone} toggleDone={toggleDone} editTask={editTask} cycle={cycle} removeTask={removeTask} />
+
+            {/* Bottom Row: Not Important */}
+            <div className="axis-label-y"><span className="axis-pill-y">NOT IMPORTANT</span></div>
+            <Quadrant q={QUADRANTS[2]} index={2} tasks={tasks} clearDone={clearDone} toggleDone={toggleDone} editTask={editTask} cycle={cycle} removeTask={removeTask} />
+            <Quadrant q={QUADRANTS[3]} index={3} tasks={tasks} clearDone={clearDone} toggleDone={toggleDone} editTask={editTask} cycle={cycle} removeTask={removeTask} />
+          </div>
         </div>
 
         <footer className="em-footer" style={{ justifyContent: 'center' }}>
