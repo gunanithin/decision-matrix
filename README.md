@@ -49,12 +49,23 @@ Your app will be available at `http://localhost:5173`.
 
 ### Testing
 
-The project uses a Test-Driven Development (TDD) approach with Vitest.
+The project uses a **Test-Driven Development (TDD)** approach with Vitest and React Testing Library. 
+
+In TDD, tests are written *before* the actual code. This ensures that every piece of logic is fully tested and robust by design. 
+
+**TDD Workflow:**
+1. Write a failing test for a new feature or component.
+2. Run `npm run test` (watch mode) and see the test fail.
+3. Write the minimal code necessary to make the test pass.
+4. Refactor the code while ensuring tests remain green.
+
+> [!IMPORTANT]
+> The continuous integration pipeline strictly enforces a **95% code coverage threshold** (for lines, functions, branches, and statements). Any new code must maintain or exceed this coverage to pass the automated tests.
 
 ```bash
-# Run tests in watch mode (ideal for TDD)
+# Run tests in watch mode (ideal for the TDD loop)
 npm run test
 
-# Run tests once with a full coverage report
+# Run tests once with a full coverage report (to check against the 95% threshold)
 npm run test -- --run --coverage
 ```
