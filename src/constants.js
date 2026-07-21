@@ -1,27 +1,27 @@
 export const QUADRANTS = [
   {
     id: "do",
-    title: "Do First: Urgent & Important",
-    shortTitle: "Do First",
-    image: "https://gunanithin.my.canva.site/_assets/media/34dd681b756d4ad187ef655b0376ad5e.png"
+    title: "DO",
+    subtitle: "do it now",
+    color: "#8c9b5b"
   },
   {
     id: "decide",
-    title: "Schedule: Important, Not Urgent",
-    shortTitle: "Schedule",
-    image: "https://gunanithin.my.canva.site/_assets/media/fdc0dcd9e5f1ecc0c477f99175fc9f36.png"
+    title: "DECIDE",
+    subtitle: "schedule a time to do it later",
+    color: "#eb6d63"
   },
   {
     id: "delegate",
-    title: "Delegate: Urgent, Not Important",
-    shortTitle: "Delegate",
-    image: "https://gunanithin.my.canva.site/_assets/media/0fe1200155f31500bcb606ef72be3589.png"
+    title: "DELEGATE",
+    subtitle: "can someone else do this for you?",
+    color: "#df9d50"
   },
   {
     id: "delete",
-    title: "Don't Do: Neither Urgent Nor Important",
-    shortTitle: "Don't Do",
-    image: "https://gunanithin.my.canva.site/_assets/media/85b7aed970d33a415364300b038afa4e.png"
+    title: "DELETE",
+    subtitle: "eliminate it",
+    color: "#1fa4a7"
   }
 ];
 

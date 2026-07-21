@@ -28,7 +28,7 @@ export default function TaskInput({
 
       <div className="em-add-row" style={{ marginTop: '8px' }}>
         <select value={picked} onChange={(e) => { setPicked(e.target.value); setDueDate(""); setDueTime(""); }}>
-          {QUADRANTS.map(q => <option key={q.id} value={q.id}>{q.shortTitle}</option>)}
+          {QUADRANTS.map(q => <option key={q.id} value={q.id}>{q.title}</option>)}
         </select>
         
         <button onClick={addTask} className="em-add-btn" style={{ flex: 1 }}>
