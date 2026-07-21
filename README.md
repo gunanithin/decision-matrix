@@ -1,52 +1,71 @@
 # Eisenhower Decision Matrix
 
-A modern, fast, and responsive Eisenhower Matrix application built with **React**, **Vite**, and **Firebase**. 
-This app helps you prioritize your tasks by categorizing them into four quadrants based on urgency and importance.
+A modern, fast, and responsive Eisenhower Matrix application. This app helps you prioritize your tasks by categorizing them into four quadrants based on urgency and importance.
 
 ## Features
 
-- **Four Quadrants**: Do First, Schedule, Delegate, and Don't Do.
+- **Four Quadrants**: Categorize tasks into Do First, Schedule, Delegate, and Don't Do.
 - **Real-time Sync**: Firebase Firestore integration keeps your tasks synced across devices instantly.
+- **Authentication**: Secure Google Sign-In via Firebase Auth.
 - **Smart Scheduling**: Seamless integration with Flatpickr for selecting due dates and times.
-- **Modern Stack**: Built with Vite for ultra-fast HMR and optimized production builds.
-- **Comprehensive Testing**: Enforced 95% test coverage using Vitest and React Testing Library.
-- **Automated CI/CD**: Vercel handles all deployments automatically via GitHub integration.
+- **Push Notifications**: Native desktop and mobile push notifications for due tasks using Firebase Cloud Messaging.
+- **Responsive Design**: Mobile-first design that looks great on all device sizes.
 
-## Getting Started
+## Tech Stack
+
+- **Frontend Framework**: [React](https://reactjs.org/)
+- **Build Tool**: [Vite](https://vitejs.dev/)
+- **Backend & Database**: [Firebase Firestore](https://firebase.google.com/docs/firestore)
+- **Authentication**: [Firebase Authentication](https://firebase.google.com/docs/auth)
+- **Push Notifications**: [Firebase Cloud Messaging](https://firebase.google.com/docs/cloud-messaging)
+- **Testing**: [Vitest](https://vitest.dev/) & React Testing Library
+- **Styling**: Vanilla CSS for maximum flexibility
+
+## Getting Started Locally
 
 ### Prerequisites
-Make sure you have Node.js (v20+) installed.
+Make sure you have Node.js (v20+) installed on your machine.
 
 ### Installation
-Clone the repository and install the dependencies:
-```bash
-npm install
-```
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/gunanithin/decision-matrix.git
+   cd decision-matrix
+   ```
+
+2. Install the dependencies:
+   ```bash
+   npm install
+   ```
 
 ### Development Server
+
 Run the local Vite development server:
 ```bash
 npm run dev
 ```
 Your app will be available at `http://localhost:5173`.
 
-### Testing (TDD)
-We use Vitest for unit and integration testing. The CI pipeline strictly enforces a **95% coverage threshold**.
+### Testing
+
+The project uses a **Test-Driven Development (TDD)** approach with Vitest and React Testing Library. 
+
+In TDD, tests are written *before* the actual code. This ensures that every piece of logic is fully tested and robust by design. 
+
+**TDD Workflow:**
+1. Write a failing test for a new feature or component.
+2. Run `npm run test` (watch mode) and see the test fail.
+3. Write the minimal code necessary to make the test pass.
+4. Refactor the code while ensuring tests remain green.
+
+> [!IMPORTANT]
+> The continuous integration pipeline strictly enforces a **95% code coverage threshold** (for lines, functions, branches, and statements). Any new code must maintain or exceed this coverage to pass the automated tests.
+
 ```bash
-# Run tests in watch mode (ideal for TDD)
+# Run tests in watch mode (ideal for the TDD loop)
 npm run test
 
-# Run tests once with a full coverage report
+# Run tests once with a full coverage report (to check against the 95% threshold)
 npm run test -- --run --coverage
 ```
-
-## Deployment
-This app is designed to be deployed to **Vercel** for optimal performance, robust security, and free global hosting.
-
-1. Create a free account at [Vercel.com](https://vercel.com/).
-2. Click **Add New... > Project** and link your GitHub account.
-3. Select this repository from the list.
-4. Vercel will automatically detect that this is a **Vite** project. Leave the default settings (Build command: `npm run build`, Output directory: `dist`).
-5. Click **Deploy**.
-
-Vercel will automatically provision a secure `.vercel.app` domain with an SSL certificate. Whenever you push to the `main` branch, Vercel will auto-deploy your updates instantly.
