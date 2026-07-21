@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import firebase, { isFirebaseReady } from '../firebase';
 
-const VAPID_KEY = "BI93zF85wGvS9F-0ZzN8_zU9_w1B0V9uV_18QZ14V_q7V0U8hN1J7y0-qY4tW5vR5cW9l10O5uW0vL7wN8_wV0s";
+const VAPID_KEY = "BMKwflH9dYxByEVVgw6Xh4eD8Caj4g17LF-x0Qe6vE-CTEooIsXImL-81bBc5eu1A6HiiLZZ9A7YeyCLeaidvFw";
 
 export function usePushNotifications(user) {
   useEffect(() => {
@@ -22,7 +22,7 @@ export function usePushNotifications(user) {
                 fcmToken: token
               }, { merge: true });
             }
-            
+
             if (!window.onMessageRegistered) {
               messaging.onMessage((payload) => {
                 console.log("Foreground message received:", payload);
@@ -50,18 +50,18 @@ export function usePushNotifications(user) {
         alert("This browser does not support desktop notification");
         return;
       }
-      
+
       let perm = Notification.permission;
       if (perm === 'default') {
         perm = await Notification.requestPermission();
       }
-      
+
       if (perm === 'granted') {
         if (!firebase.messaging.isSupported()) {
           alert("Firebase Messaging is not supported in this browser.");
           return;
         }
-        
+
         const messaging = firebase.messaging();
         let swRegistration = await navigator.serviceWorker.getRegistration('/firebase-messaging-sw.js');
         if (!swRegistration) {
@@ -87,7 +87,7 @@ export function usePushNotifications(user) {
           }, { merge: true });
           alert("Native Push Notifications enabled!");
         }
-        
+
         if (!window.onMessageRegistered) {
           messaging.onMessage((payload) => {
             if (payload.notification && document.visibilityState === 'visible') {
